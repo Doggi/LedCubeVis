@@ -1,12 +1,5 @@
 let cubeSketch = function(p) {
-  p.config = {
-    cubeNumber: 8,
-    cubeLedSize: 5,
-    cubeSpace: 19,
-    frameRate: 30,
-    showBoxes: false
-  };
-
+  
   p.easycam;
   p.cube = [];
   p.currentCube;
@@ -29,7 +22,7 @@ let cubeSketch = function(p) {
   };
 
   p.setup = function() {
-    p.cube[p.currentFrame] = new LedCube({ leds: p.config.cubeNumber, p5: p });
+    p.cube[p.currentFrame] = new LedCube({ leds: config.cubeNumber, p5: p });
     p.currentCube = p.cube[p.currentFrame];
     let parentSize = p.select("#cube").size();
     p.createCanvas(parentSize.width, parentSize.height, p.WEBGL);
@@ -43,7 +36,7 @@ let cubeSketch = function(p) {
     p.easycam.setDistanceMax(getCubeWidth() * 3);
     p.easycam.setDistanceMin(getCubeWidth() * 0.1);
 
-    p.frameRate(p.config.frameRate);
+    p.frameRate(config.frameRate);
 
     let trans = getCubeWidth() / 2;
     p.translateVetor = p.createVector(-trans, -trans, -trans);
@@ -80,9 +73,9 @@ let cubeSketch = function(p) {
       p.push();
 
       p.translate(
-        (p.config.cubeLedSize + p.config.cubeSpace) * led.vector().x,
-        (p.config.cubeLedSize + p.config.cubeSpace) * led.vector().y,
-        (p.config.cubeLedSize + p.config.cubeSpace) * led.vector().z
+        (config.cubeLedSize + config.cubeSpace) * led.vector().x,
+        (config.cubeLedSize + config.cubeSpace) * led.vector().y,
+        (config.cubeLedSize + config.cubeSpace) * led.vector().z
       );
 
       if (
@@ -98,21 +91,21 @@ let cubeSketch = function(p) {
         p.specularMaterial(255, 255, 255, 5);
       }
 
-      if (p.config.showBoxes) {
-        p.box(p.config.cubeLedSize);
+      if (config.showBoxes) {
+        p.box(config.cubeLedSize);
       } else {
         //ambientLight(color(11, 60, 191));
         //pointLight(color(11, 60, 191), createVector(0,0,0))
-        p.sphere(p.config.cubeLedSize / 2);
+        p.sphere(config.cubeLedSize / 2);
       }
 
-      if (p.config.DEBUG) {
+      if (config.DEBUG) {
         p.fill(255, 255, 255);
-        p.textSize(p.config.cubeLedSize / 2);
+        p.textSize(config.cubeLedSize / 2);
         p.textAlign(p.CENTER, p.CENTER);
         p.text(index, 0, 0);
-        p.textSize(p.config.cubeLedSize / 4);
-        p.text(led.pos.array().toString(), 0, p.config.cubeLedSize / 3);
+        p.textSize(config.cubeLedSize / 4);
+        p.text(led.pos.array().toString(), 0, config.cubeLedSize / 3);
       }
       p.pop();
     });
@@ -175,7 +168,7 @@ let cubeSketch = function(p) {
 
     let addFrameButton = p.createButton("add Frame");
     addFrameButton.mousePressed(function() {
-      cube.push(new LedCube({ leds: p.config.cubeNumber }));
+      cube.push(new LedCube({ leds: config.cubeNumber }));
       p.currentFrame++;
       p.currentFrameInput.html(p.cube.length);
       totalFrameInput.html(p.cube.length);
@@ -308,8 +301,8 @@ let cubeSketch = function(p) {
 
   function getCubeWidth() {
     p.cubeWidth =
-      (p.config.cubeLedSize + p.config.cubeSpace) * p.currentCube.config.leds -
-      p.config.cubeSpace;
+      (config.cubeLedSize + config.cubeSpace) * p.currentCube.config.leds -
+      config.cubeSpace;
     return p.cubeWidth;
   }
 };
