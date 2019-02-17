@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>p5.js example</title>
+  <title>LED Cube Visualization</title>
   <link rel="stylesheet" href="css/bootstrap.min.css" />
   <link rel="stylesheet" href="fontawesome-free-5.7.2-web/css/solid.min.css">
   <link rel="stylesheet" href="fontawesome-free-5.7.2-web/css/fontawesome.min.css">
@@ -35,8 +35,18 @@
         top: 50%;
         transform: translate(-50%, -50%);
       }
+      .scrolling-wrapper-flexbox {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+      }
+      .scrolling-wrapper-flexbox .card {
+        flex: 0 0 auto;
+      }
     </style>
   <script src="js/jquery-3.3.1.slim.min.js"></script>
+  <script src="jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+  <script src="js/nano.js"></script>
   <script src="bootstrap-4.3.0-dist/js/bootstrap.min.js"></script>
   <script src="js/p5.min.js"></script>
   <script src="js/p5.dom.min.js"></script>
@@ -83,23 +93,13 @@
               aria-controls="collapseTwo">general settings</div>
             <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
               <div id="controlpanel" class="card-body">
-                <button id="btnAddFrame" type="button" class="btn btn-primary">add frame</button>
-                <button id="btnRemoveFrame" type="button" class="btn btn-primary">remove frame</button>
-                <button id="btnRemoveFrame" type="button" class="btn btn-primary"><i class="fas fa-angle-double-left"></i></button>
-                <button id="btnRemoveFrame" type="button" class="btn btn-primary"><i class="fas fa-angle-left"></i></button>
-                <button id="btnRemoveFrame" type="button" class="btn btn-primary"><i class="fas fa-angle-right"></i></button>
-                <button id="btnRemoveFrame" type="button" class="btn btn-primary"><i class="fas fa-angle-double-right"></i></button>
-
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-primary active"> <input type="radio" name="axis" id="axis1" value="x"
-                      autocomplete="off" checked> X </label>
-                  <label class="btn btn-primary"> <input type="radio" name="axis" id="axis2" value="y" autocomplete="off">
-                    Y
-                  </label>
-                  <label class="btn btn-primary"> <input type="radio" name="axis" id="axis3" value="z" autocomplete="off">
-                    Z
-                  </label>
+                <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+                  <label class="btn btn-primary active"> <input type="radio" name="axis" id="axis1" value="x" checked>
+                    X </label>
+                  <label class="btn btn-primary"><input type="radio" name="axis" id="axis2" value="y">Y</label>
+                  <label class="btn btn-primary"> <input type="radio" name="axis" id="axis3" value="z">Z</label>
                 </div>
+                <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Single toggle</button>
               </div>
             </div>
           </div>
@@ -109,15 +109,19 @@
     </div>
 
     <div class="row h-25">
-      <div class="d-flex flex-row flex-nowrap">
-        <div class="card frame border-dark">
-          <div class="h-100 btn btn-info rounded-right border-dark border_hover">
-            <i class="fa fa-plus"></i>
-          </div>
-          <div class="card-header"> Featured </div>
-          <div class="card-body">Body</div>
-          <div class="card-footer text-muted"> 2 days ago </div>
+      <div id="sortableFrames" class="d-flex flex-row flex-nowrap scrolling-wrapper-flexbox">
+      </div>
+    </div>
+  </div>
+  <div id="templates" class="d-none">
+    <div id="frameTemplate">
+      <div class="card frame border-dark" id="frame{frame_number}">
+        <div class="h-100 btn btn-info rounded-right border-dark border_hover">
+          <i id="addFrame{frame_number}" class="fa fa-plus"></i>
         </div>
+        <div class="card-header text-center"> {frame_number} </div>
+        <div class="card-body"><img src="{img_src}"></div>
+        <div class="card-footer text-center"><i id="delteFrame{frame_number}" class="fas fa-trash btn btn-primary"></i></div>
       </div>
     </div>
   </div>

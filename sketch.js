@@ -1,7 +1,7 @@
 let cubeSketch = function(p) {
   
   p.easycam;
-  p.cube = [];
+  cubeFrames = [];
   p.currentCube;
   p.currentFrame = 0;
   p.translateVetor;
@@ -22,8 +22,8 @@ let cubeSketch = function(p) {
   };
 
   p.setup = function() {
-    p.cube[p.currentFrame] = new LedCube({ leds: config.cubeNumber, p5: p });
-    p.currentCube = p.cube[p.currentFrame];
+    cubeFrames[p.currentFrame] = new LedCube({ leds: config.cubeNumber, p5: p });
+    p.currentCube = cubeFrames[p.currentFrame];
     let parentSize = p.select("#cube").size();
     p.createCanvas(parentSize.width, parentSize.height, p.WEBGL);
 
@@ -53,7 +53,7 @@ let cubeSketch = function(p) {
       b.checked(led.isOn());
     });
 
-    p.currentCube = p.cube[p.currentFrame];
+    p.currentCube = cubeFrames[p.currentFrame];
 
     p.background(32);
 
@@ -170,16 +170,16 @@ let cubeSketch = function(p) {
     addFrameButton.mousePressed(function() {
       cube.push(new LedCube({ leds: config.cubeNumber }));
       p.currentFrame++;
-      p.currentFrameInput.html(p.cube.length);
-      totalFrameInput.html(p.cube.length);
+      p.currentFrameInput.html(cubeFrames.length);
+      totalFrameInput.html(cubeFrames.length);
     });
     controlpanel.child(addFrameButton);
     let removeFrameButton = p.createButton("remove Frame");
     removeFrameButton.mousePressed(function() {
-      p.cube.splice(p.currentFrame, 1);
+      cubeFrames.splice(p.currentFrame, 1);
       p.currentFrame--;
-      p.currentFrameInput.html(p.cube.length);
-      totalFrameInput.html(p.cube.length);
+      p.currentFrameInput.html(cubeFrames.length);
+      totalFrameInput.html(cubeFrames.length);
     });
     controlpanel.child(removeFrameButton);
     controlpanel.child(p.createElement("br"));
@@ -207,7 +207,7 @@ let cubeSketch = function(p) {
     let afterFrameButton = p.createButton(">");
     afterFrameButton.mousePressed(function() {
       p.currentFrame =
-        p.currentFrame + 1 >= p.cube.length
+        p.currentFrame + 1 >= cubeFrames.length
           ? p.currentFrame
           : p.currentFrame + 1;
       currentFrameInput.html(currentFrame + 1);
@@ -236,28 +236,28 @@ let cubeSketch = function(p) {
 
     let saveButton = p.createButton("save");
     saveButton.mousePressed(function() {
-      output.value(JSON.stringify(p.cube.map(c => c.json())));
+      output.value(JSON.stringify(cubeFrames.map(c => c.json())));
     });
     controlpanel.child(saveButton);
     let loadButton = p.createButton("load");
     loadButton.mousePressed(function() {
       let input = JSON.parse(p.output.value());
-      p.cube = [];
+      cubeFrames = [];
       input.forEach(c => {
         let _c = new LedCube({ leds: Math.ceil(Math.pow(c.length, 1 / 3)) });
         c.forEach(led => {
           _c.getLed(led.pos.x, led.pos.y, led.pos.z).setStatus(led.on);
         });
-        p.cube.push(_c);
+        cubeFrames.push(_c);
       });
-      p.currentCube = p.cube[0];
-      totalFrameInput.html(p.cube.length);
+      p.currentCube = cubeFrames[0];
+      totalFrameInput.html(cubeFrames.length);
     });
     controlpanel.child(loadButton);
 
     let downloadButton = p.createButton("download");
     downloadButton.mousePressed(function() {
-      saveJson(p.cube.map(c => c.json()), "cubes.json");
+      saveJson(cubeFrames.map(c => c.json()), "cubes.json");
     });
     controlpanel.child(downloadButton);
 
@@ -265,7 +265,7 @@ let cubeSketch = function(p) {
     let startButton = p.createButton("Start");
     startButton.mousePressed(function() {
       p.refreshIntervalId = setInterval(function() {
-        p.currentFrame = (p.currentFrame + 1) % p.cube.length;
+        p.currentFrame = (p.currentFrame + 1) % cubeFrames.length;
       }, 500);
     });
     controlpanel.child(startButton);
