@@ -1,0 +1,13 @@
+{
+    "zenMode.centerLayout": false,
+    "terminal.integrated.fontFamily": "Meslo LG L for Powerline",
+    "editor.formatOnSave": false,
+    // Enable per-language
+    "[javascript]": {
+        "editor.formatOnSave": true
+    },
+    "window.zoomLevel": 1,
+    "workbench.editor.enablePreview": false,
+    "prettier.singleQuote": false
+
+}
