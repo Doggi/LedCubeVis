@@ -5,7 +5,8 @@ import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Menu from "./component/Menu.js";
 import Sketch from "./component/Sketch.js";
 import Frames from "./component/Frames.js";
-import "./slate.bootstrap.min.css";
+//import "./slate.bootstrap.min.css";
+import "./darkly.bootstrap.min.css"
 import "./App.css";
 
 /**
@@ -26,21 +27,17 @@ class App extends Component {
     this.addCubeAt = this.addCubeAt.bind(this);
   }
 
-  setAxis(axis: string) {
+  setAxis(axis) {
     this.setState({ axis: axis });
-    console.log(axis);
   }
 
-  removeCube(position: number) {
-    console.log("remove cube at position " + position);
+  removeCube(position) {
     let cubes = this.state.cubes;
     cubes.splice(position, 1);
     this.setState({ cubes: cubes });
-    console.log(cubes);
   }
 
-  addCubeAt(position: number) {
-    console.log("add cube at position " + position);
+  addCubeAt(position) {
     let begin = this.state.cubes.slice(0, position + 1);
     let end = this.state.cubes.slice(position + 1);
     this.setState({ cubes: [...begin, "addedAfter" + position, ...end] });
@@ -48,7 +45,7 @@ class App extends Component {
 
   render() {
     return (
-      <Container fluid="true" className="h-100">
+      <Container fluid="true" className="h-100 px-0">
         <Row noGutters="true" className="h-75">
           <Col lg="2" md="2" sm="2" xl="2" xs="2" className="h-100">
             <Menu setAxis={this.setAxis} axis={this.state.axis} />

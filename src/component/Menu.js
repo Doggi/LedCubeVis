@@ -6,7 +6,6 @@ class Menu extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    //this.handleSubmit = this.handleSubmit.bind(this); 
   }
 
   handleChange(value) {
@@ -20,6 +19,7 @@ class Menu extends Component {
         name="axis"
         value={this.props.axis}
         className="w-100"
+        size="sm"
         onChange={this.props.setAxis}
       >
         <ToggleButton value="x">X</ToggleButton>

@@ -12,7 +12,7 @@ class Frame extends Component {
         <Col className="frameWidth">
           <Card className="card-block h-100">
             <Card.Body>{image}</Card.Body>
-            <Card.Footer>
+            <Card.Footer className="text-center">
               #{num + 1}/{this.props.numTotal}
               <Button
                 variant="danger"
