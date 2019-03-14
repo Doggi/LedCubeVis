@@ -6,7 +6,7 @@ import Menu from "./component/Menu.js";
 import Sketch from "./component/Sketch.js";
 import Frames from "./component/Frames.js";
 //import "./slate.bootstrap.min.css";
-import "./darkly.bootstrap.min.css"
+import "./darkly.bootstrap.min.css";
 import "./App.css";
 
 /**
@@ -21,27 +21,23 @@ class App extends Component {
       cubes: [0, 1, 2],
       axis: "x"
     };
-
-    this.setAxis = this.setAxis.bind(this);
-    this.removeCube = this.removeCube.bind(this);
-    this.addCubeAt = this.addCubeAt.bind(this);
   }
 
-  setAxis(axis) {
-    this.setState({ axis: axis });
-  }
+  setAxis = axis => {
+    this.setState({ axis });
+  };
 
-  removeCube(position) {
+  removeCube = position => {
     let cubes = this.state.cubes;
     cubes.splice(position, 1);
-    this.setState({ cubes: cubes });
-  }
+    this.setState({ cubes });
+  };
 
-  addCubeAt(position) {
+  addCubeAt = position => {
     let begin = this.state.cubes.slice(0, position + 1);
     let end = this.state.cubes.slice(position + 1);
     this.setState({ cubes: [...begin, "addedAfter" + position, ...end] });
-  }
+  };
 
   render() {
     return (
