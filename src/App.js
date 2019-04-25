@@ -3,9 +3,9 @@ import { Container, Row, Col } from "react-bootstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Menu from "./component/Menu.js";
-import Sketch from "./component/Sketch.js";
 import Frames from "./component/Frames.js";
-//import "./slate.bootstrap.min.css";
+import ThreeScene from "./component/ThreeScene.js";
+import CubeFrame from "./class/CubeFrame.class.js";
 import "./darkly.bootstrap.min.css";
 import "./App.css";
 
@@ -17,11 +17,17 @@ library.add(faPlus, faTrash);
 class App extends Component {
   constructor(props, context) {
     super(props, context);
+    let initCube = new CubeFrame();
     this.state = {
-      cubes: [0, 1, 2],
-      axis: "x"
+      cubes: [initCube],
+      axis: "x",
+      cube: initCube
     };
   }
+
+  setCurrentCube = cube => {
+    this.setState({ cube });
+  };
 
   setAxis = axis => {
     this.setState({ axis });
@@ -47,7 +53,7 @@ class App extends Component {
             <Menu setAxis={this.setAxis} axis={this.state.axis} />
           </Col>
           <Col lg="10" md="10" sm="10" xl="10" xs="10" className="h-100">
-            <Sketch />
+            <ThreeScene cube={this.state.cube} />
           </Col>
         </Row>
         <Row noGutters="true" className="h-25">

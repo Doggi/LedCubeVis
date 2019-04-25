@@ -22,7 +22,7 @@ class Frames extends Component {
               key={k}
               num={k}
               numTotal={this.props.cubes.length}
-              image={m}
+              image={k}
               removeCube={this.props.removeCube}
               addCubeAt={this.props.addCubeAt}
             />
