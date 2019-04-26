@@ -17,8 +17,9 @@ library.add(faPlus, faTrash);
 class App extends Component {
   constructor(props, context) {
     super(props, context);
-    let initCube = new CubeFrame();
+    let initCube = new CubeFrame({ leds: 8 });
     this.state = {
+      ledsCount: 8,
       cubes: [initCube],
       axis: "x",
       cube: initCube
@@ -42,7 +43,9 @@ class App extends Component {
   addCubeAt = position => {
     let begin = this.state.cubes.slice(0, position + 1);
     let end = this.state.cubes.slice(position + 1);
-    this.setState({ cubes: [...begin, "addedAfter" + position, ...end] });
+    this.setState({
+      cubes: [...begin, new CubeFrame({ leds: this.state.ledsCount }), ...end]
+    });
   };
 
   render() {
@@ -50,7 +53,11 @@ class App extends Component {
       <Container fluid="true" className="h-100 px-0">
         <Row noGutters="true" className="h-75">
           <Col lg="2" md="2" sm="2" xl="2" xs="2" className="h-100">
-            <Menu setAxis={this.setAxis} axis={this.state.axis} />
+            <Menu
+              setAxis={this.setAxis}
+              axis={this.state.axis}
+              cube={this.state.cube}
+            />
           </Col>
           <Col lg="10" md="10" sm="10" xl="10" xs="10" className="h-100">
             <ThreeScene cube={this.state.cube} />
