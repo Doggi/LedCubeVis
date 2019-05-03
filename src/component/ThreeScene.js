@@ -15,12 +15,15 @@ class ThreeScene extends Component {
   componentRendered() {
     const width = this.mount.clientWidth;
     const height = this.mount.clientHeight;
+    this.ledMap = {};
     //ADD SCENE
     this.scene = new THREE.Scene();
     //ADD CAMERA
     this.camera = new THREE.PerspectiveCamera(75, width / height, 1, 1000);
     this.camera.position.z = 210;
     this.controls = new OrbitControls(this.camera, this.mount);
+    this.controls.minDistance = 100;
+    this.controls.maxDistance = 300;
     //ADD RENDERER
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -42,11 +45,11 @@ class ThreeScene extends Component {
       color: 0xffd300,
       wireframe: true
     });
+    this.materialOn = materialOn;
+    this.materialOff = materialOff;
     let setOff = (this.props.cube.config.leds / 2) * 15;
-    console.log(setOff);
 
     this.props.cube.array().forEach((led, index) => {
-      index === 100 ? led.setOn() : led.setOff();
       let material = led.isOn() ? materialOn : materialOff;
       let mesh = new THREE.Mesh(geometry, material);
       mesh.position.set(
@@ -55,6 +58,9 @@ class ThreeScene extends Component {
         led.vector().z * 15 - setOff + 7.5
       );
       this.scene.add(mesh);
+      this.ledMap[
+        `${led.vector().x}_${led.vector().y}_${led.vector().z}`
+      ] = mesh;
     });
 
     this.controls.update();
@@ -83,6 +89,12 @@ class ThreeScene extends Component {
 
   renderScene = () => {
     this.updateSize();
+    this.props.cube.array().forEach(led => {
+      let ledMesh = this.ledMap[
+        `${led.vector().x}_${led.vector().y}_${led.vector().z}`
+      ];
+      ledMesh.material = led.isOn() ? this.materialOn : this.materialOff;
+    });
     this.renderer.render(this.scene, this.camera);
   };
 

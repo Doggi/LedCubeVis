@@ -34,6 +34,13 @@ class App extends Component {
     this.setState({ axis });
   };
 
+  changeLedStatus = vector => {
+    let cube = this.state.cube;
+    let led = cube.getLed(vector._x, vector._y, vector._z);
+    led.setStatus(!led.isOn());
+    this.setCurrentCube(cube);
+  };
+
   removeCube = position => {
     let cubes = this.state.cubes;
     cubes.splice(position, 1);
@@ -55,6 +62,7 @@ class App extends Component {
           <Col lg="2" md="2" sm="2" xl="2" xs="2" className="h-100">
             <Menu
               setAxis={this.setAxis}
+              changeLedStatus={this.changeLedStatus}
               axis={this.state.axis}
               cube={this.state.cube}
             />
