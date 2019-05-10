@@ -57,6 +57,7 @@ class ThreeScene extends Component {
         led.vector().y * 15 - setOff + 7.5,
         led.vector().z * 15 - setOff + 7.5
       );
+
       this.scene.add(mesh);
       this.ledMap[
         `${led.vector().x}_${led.vector().y}_${led.vector().z}`

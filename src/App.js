@@ -22,7 +22,8 @@ class App extends Component {
       ledsCount: 8,
       cubes: [initCube],
       axis: "x",
-      cube: initCube
+      cube: initCube,
+      row: 0
     };
   }
 
@@ -31,7 +32,12 @@ class App extends Component {
   };
 
   setAxis = axis => {
-    this.setState({ axis });
+    let cube = this.state.cube;
+    this.setState({ axis, cube });
+  };
+
+  setSelectedRow = row => {
+    this.setState({ row });
   };
 
   changeLedStatus = vector => {
@@ -62,6 +68,7 @@ class App extends Component {
           <Col lg="2" md="2" sm="2" xl="2" xs="2" className="h-100">
             <Menu
               setAxis={this.setAxis}
+              setSelectedRow={this.setSelectedRow}
               changeLedStatus={this.changeLedStatus}
               axis={this.state.axis}
               cube={this.state.cube}
