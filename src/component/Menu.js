@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import {
   ToggleButtonGroup,
   ToggleButton,
-  ButtonToolbar
+  ButtonToolbar,
+  Button
 } from "react-bootstrap";
 import InputRange from "react-input-range";
 import "react-input-range/lib/css/index.css";
@@ -12,17 +13,8 @@ class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedRow: 0,
-      ledStatus: []
+      selectedRow: 0
     };
-    let number = this.props.cube.config.leds;
-    for (let i = 0; i < number; i++) {
-      for (let j = 0; j < number; j++) {
-        for (let l = 0; l < number; l++) {
-          //ledStatus[i][j][l] = 1;
-        }
-      }
-    }
   }
 
   handleChange = value => {
@@ -57,6 +49,8 @@ class Menu extends Component {
         _y = Math.floor(id / leds);
         _z = selectedRow;
         break;
+      default:
+        console.log(`ups, nothing to do with axis ${axis}`);
     }
     return { _x, _y, _z };
   };
@@ -80,15 +74,16 @@ class Menu extends Component {
           ledVector._z
         );
         children.push(
-          <ToggleButton
+          <Button
             key={i * number + j}
-            value={j}
-            onChange={value => {
+            active={led.isOn()}
+            value={i * number + j}
+            onClick={value => {
               this.handleLedStatus(ledVector, value);
             }}
           >
             {j}
-          </ToggleButton>
+          </Button>
         );
       }
       //Create the parent and add the children
@@ -129,6 +124,18 @@ class Menu extends Component {
         <ButtonToolbar>
           {this.createPanel(this.props.cube.config.leds)}
         </ButtonToolbar>
+
+        <ToggleButtonGroup
+          type="checkbox"
+          name="axis"
+          value={this.props.viewSelectedRow}
+          className="w-100"
+          size="sm"
+          onChange={this.props.changeViewSelectedRow}
+          style={{ padding: "5px 0 0 0" }}
+        >
+          <ToggleButton value={true}>view selected row</ToggleButton>
+        </ToggleButtonGroup>
       </>
     );
   }

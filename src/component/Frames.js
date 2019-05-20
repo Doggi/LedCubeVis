@@ -25,6 +25,8 @@ class Frames extends Component {
               image={k}
               removeCube={this.props.removeCube}
               addCubeAt={this.props.addCubeAt}
+              setCubeByIndex={this.props.setCubeByIndex}
+              cubeIndex={this.props.cubeIndex}
             />
           ))}
         </Row>

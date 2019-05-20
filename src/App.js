@@ -23,12 +23,18 @@ class App extends Component {
       cubes: [initCube],
       axis: "x",
       cube: initCube,
-      row: 0
+      cubeIndex: 0,
+      row: 0,
+      viewSelectedRow: true
     };
   }
 
   setCurrentCube = cube => {
     this.setState({ cube });
+  };
+
+  setCubeByIndex = index => {
+    this.setState({ cube: this.state.cubes[index], cubeIndex: index });
   };
 
   setAxis = axis => {
@@ -48,9 +54,17 @@ class App extends Component {
   };
 
   removeCube = position => {
-    let cubes = this.state.cubes;
+    let cubes = [...this.state.cubes];
     cubes.splice(position, 1);
-    this.setState({ cubes });
+    if (cubes.length === 0) {
+      cubes = [new CubeFrame({ leds: this.state.ledsCount })];
+    }
+    let cubeIndex = Math.max(0, Math.min(position, cubes.length - 1));
+    this.setState({
+      cube: cubes[cubeIndex],
+      cubes,
+      cubeIndex
+    });
   };
 
   addCubeAt = position => {
@@ -59,6 +73,13 @@ class App extends Component {
     this.setState({
       cubes: [...begin, new CubeFrame({ leds: this.state.ledsCount }), ...end]
     });
+    if (position < this.state.cubeIndex) {
+      this.setState({ cubeIndex: this.state.cubeIndex + 1 });
+    }
+  };
+
+  changeViewSelectedRow = event => {
+    this.setState({ viewSelectedRow: !this.state.viewSelectedRow });
   };
 
   render() {
@@ -72,10 +93,17 @@ class App extends Component {
               changeLedStatus={this.changeLedStatus}
               axis={this.state.axis}
               cube={this.state.cube}
+              viewSelectedRow={this.state.viewSelectedRow}
+              changeViewSelectedRow={this.changeViewSelectedRow}
             />
           </Col>
           <Col lg="10" md="10" sm="10" xl="10" xs="10" className="h-100">
-            <ThreeScene cube={this.state.cube} />
+            <ThreeScene
+              cube={this.state.cube}
+              axis={this.state.axis}
+              row={this.state.row}
+              viewSelectedRow={this.state.viewSelectedRow}
+            />
           </Col>
         </Row>
         <Row noGutters="true" className="h-25">
@@ -84,6 +112,8 @@ class App extends Component {
               cubes={this.state.cubes}
               removeCube={this.removeCube}
               addCubeAt={this.addCubeAt}
+              setCubeByIndex={this.setCubeByIndex}
+              cubeIndex={this.state.cubeIndex}
             />
           </Col>
         </Row>

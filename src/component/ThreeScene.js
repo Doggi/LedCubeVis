@@ -43,10 +43,19 @@ class ThreeScene extends Component {
       transparent: true,
       opacity: 0.05,
       color: 0xffd300,
+      wireframe: false
+    });
+    const materialSelectedOff = new THREE.MeshLambertMaterial({
+      color: 0xffff00,
       wireframe: true
+    });
+    const materialSelectedOn = new THREE.MeshLambertMaterial({
+      color: 0xffff00
     });
     this.materialOn = materialOn;
     this.materialOff = materialOff;
+    this.materialSelectedOff = materialSelectedOff;
+    this.materialSelectedOn = materialSelectedOn;
     let setOff = (this.props.cube.config.leds / 2) * 15;
 
     this.props.cube.array().forEach((led, index) => {
@@ -95,6 +104,24 @@ class ThreeScene extends Component {
         `${led.vector().x}_${led.vector().y}_${led.vector().z}`
       ];
       ledMesh.material = led.isOn() ? this.materialOn : this.materialOff;
+
+      let axis = this.props.axis;
+      let row = this.props.row;
+      if (this.props.viewSelectedRow) {
+        if (axis === "x" && led.vector().x === row) {
+          ledMesh.material = led.isOn()
+            ? this.materialSelectedOn
+            : this.materialSelectedOff;
+        } else if (axis === "y" && led.vector().y === row) {
+          ledMesh.material = led.isOn()
+            ? this.materialSelectedOn
+            : this.materialSelectedOff;
+        } else if (axis === "z" && led.vector().z === row) {
+          ledMesh.material = led.isOn()
+            ? this.materialSelectedOn
+            : this.materialSelectedOff;
+        }
+      }
     });
     this.renderer.render(this.scene, this.camera);
   };
