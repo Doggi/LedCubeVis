@@ -6,6 +6,7 @@ import Menu from "./component/Menu.js";
 import Frames from "./component/Frames.js";
 import ThreeScene from "./component/ThreeScene.js";
 import CubeFrame from "./class/CubeFrame.class.js";
+import FrameImageRenderer from "./component/FrameImageRenderer";
 import "./darkly.bootstrap.min.css";
 import "./App.css";
 
@@ -59,7 +60,12 @@ class App extends Component {
     if (cubes.length === 0) {
       cubes = [new CubeFrame({ leds: this.state.ledsCount })];
     }
-    let cubeIndex = Math.max(0, Math.min(position, cubes.length - 1));
+    let cubeIndex = -1;
+    cubeIndex =
+      position <= this.state.cubeIndex
+        ? this.state.cubeIndex - 1
+        : this.state.cubeIndex;
+
     this.setState({
       cube: cubes[cubeIndex],
       cubes,
@@ -82,6 +88,15 @@ class App extends Component {
     this.setState({ viewSelectedRow: !this.state.viewSelectedRow });
   };
 
+  setImageData = (dataUrl, index) => {
+    let cube = this.state.cube;
+    if (index !== undefined) {
+      cube = this.state.cubes[index];
+    }
+    cube.dataUrl = dataUrl;
+    this.setState({ cubes: this.state.cubes });
+  };
+
   render() {
     return (
       <Container fluid="true" className="h-100 px-0">
@@ -96,6 +111,7 @@ class App extends Component {
               viewSelectedRow={this.state.viewSelectedRow}
               changeViewSelectedRow={this.changeViewSelectedRow}
             />
+            <FrameImageRenderer cubes={this.state.cubes} />
           </Col>
           <Col lg="10" md="10" sm="10" xl="10" xs="10" className="h-100">
             <ThreeScene
